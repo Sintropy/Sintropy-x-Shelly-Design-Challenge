@@ -15,7 +15,7 @@ We are interested in understanding **how you think**, how you structure a proble
 Assume Sintropy APIs are:
 
 - **Multi-tenant** (multiple customers use the system in isolation)
-- Protected by an existing authentication layer that allows identifying which tenant is requesting a resource  
+- Protected by an existing authentication layer that identifies which tenant is requesting a resource
 - Authentication/authorization design is **not part of this test**
 
 You can assume that when a request reaches your module, the tenant is already identified.
@@ -29,44 +29,31 @@ You can assume that when a request reaches your module, the tenant is already id
 
 Regarding the Shelly documentation:
 
-👉 **Ignore the "Cloud API / API Integrator" section.**  
-For this challenge, focus only on APIs relevant to:
-- reading device data
-- reading ON/OFF state
-- sending ON/OFF commands
+👉 Ignore the section related to **API Integrator**.
 
-You do not need to study everything in detail — use only what is relevant.
+For this challenge, focus only on APIs relevant to:
+
+- Retrieving device data  
+- Retrieving device state  
+- Receiving state updates (if applicable)  
+- Sending ON/OFF commands  
+
+You are free to choose the integration approach you consider most appropriate.
 
 ---
 
 ## Scope of the Challenge
 
-For simplicity, imagine we need to manage a generic category of Shelly devices that:
+We consider devices that:
 
-- produce electrical measurements (e.g. voltage and current)
-- expose an ON/OFF state and can be switched on or off
+- Produce electrical measurements (voltage/current)
+- Expose an ON/OFF state that can be modified
 
-The specific device model is not important.  
-The goal is to reason about how you would abstract this type of device within Sintropy APIs.
+The specific device model is not relevant.  
+Reason in terms of abstraction.
 
-We conceptually treat devices as:
-
-- **sensors** generating data (voltage/current)
-- **actuators** exposing a modifiable state (ON/OFF)
-
-⚠️ Important note:  
-The ON/OFF command may also be triggered manually (e.g. physical button or operator).  
-The system must therefore be able to read and maintain an **updated device state**.
-
-Out of scope:
-
-- UI
-- provisioning account
-- deployment or infrastructure setup
-- real database implementation
-- support for all Shelly models
-
-If something is unclear, make reasonable assumptions and state them explicitly.
+⚠️ The ON/OFF state may also change manually (e.g. physical button).  
+The system must maintain an **updated device state**.
 
 ---
 
@@ -78,23 +65,21 @@ Consider a scenario with **100 customers**, each with **100 devices** (around **
 
 Additionally:
 
-- Assume external APIs (Shelly) may not always be available. How would you handle this?
+- Assume external APIs (Shelly) may not always be available — how would you handle this?
 - Explain what you consider to be “up-to-date state” and what trade-offs you would accept between accuracy and scalability.
 
 ---
 
 ## What We Ask You To Do
 
-Imagine you are designing this integration.
-
 Describe:
 
-1. How you would model devices inside Sintropy (multi-tenant aware)
-2. How you would expose voltage/current data and ON/OFF state via API
-3. How you would send ON/OFF commands through Sintropy APIs
-4. How you would handle state changes triggered manually
+1. How you would model devices (multi-tenant aware)
+2. How you would expose telemetry and ON/OFF state via API
+3. How you would send ON/OFF commands
+4. How you would handle manual state changes
 5. How you would handle temporary unavailability of Shelly APIs
-6. Potential issues or edge cases you foresee
+6. Any edge cases you foresee
 
 There is no single correct answer.  
 We care more about your reasoning than about a perfect solution.
@@ -105,29 +90,31 @@ We care more about your reasoning than about a perfect solution.
 
 Create a private repository using this template and add us as collaborators.
 
-Inside your repository, create a file:
+Create a file:
 
 `SOLUTION.md`
 
 Include:
 
 - Your assumptions
-- A proposed architecture (can be simple)
-- Example API endpoints with JSON examples
+- Proposed architecture
+- Example API endpoints (JSON examples are sufficient)
 - Explanation of your decisions
-- Alternative approaches you considered
-- (Optional) A section titled “Bonus – AWS”
+- Trade-offs considered
 
-You may use:
+### Format
 
-- Text explanations
+You are free to use **any format** that helps you clearly explain your reasoning:
+
+- Plain text
 - Bullet points
 - JSON examples
 - Pseudocode
 - Simple diagrams (ASCII or Mermaid)
+- Mixed structure
 
-🚫 Do not write executable code.  
-We prefer a clear explanation in `SOLUTION.md` over working code.
+🚫 Do not write executable or production-ready code.  
+We are evaluating reasoning and clarity only.
 
 ---
 
@@ -136,22 +123,19 @@ We prefer a clear explanation in `SOLUTION.md` over working code.
 We evaluate:
 
 - Clarity of reasoning
-- Ability to structure the problem
-- Consistency between APIs, tenant model, device state, and behavior
-- Ability to identify scalability and availability concerns
+- Problem structuring ability
+- Consistency between APIs, tenant model, and device state
+- Scalability and availability awareness
 - Ability to reason about trade-offs
 - Technical communication
 
 We do NOT evaluate:
 
-- Executable or working code
+- Working code
 - Implementation completeness
-- Language or framework choice
-- Diagram aesthetics or formatting
-- Exact endpoint syntax precision
-- Repository formatting or style
-
-Use any format that best helps you explain your reasoning.
+- Language/framework choice
+- Diagram aesthetics
+- Repository formatting
 
 ---
 
@@ -160,32 +144,37 @@ Use any format that best helps you explain your reasoning.
 This section is optional.
 
 If you are familiar with AWS (even at a basic level), briefly answer the following.  
-If not, ignore this section — it will not affect your evaluation.
+If you are not, ignore this section — it will not affect your evaluation.
 
 **Question:**  
 Ignoring the Shelly integration, how would you design Sintropy APIs using AWS services?
 
-High-level answers are sufficient. For example:
+High-level thinking is sufficient. For example:
 
-- Which services would you use (API Gateway, Lambda, ECS, DynamoDB, SQS, EventBridge, etc.)
-- How you would separate main components
-- How you would handle authentication, logging, and persistence
+- Which services would you use? (e.g. API Gateway, Lambda, ECS, DynamoDB, SQS, EventBridge, etc.)
+- How would you separate main components?
+- How would you handle authentication, logging, and persistence?
+- Would you use an event-driven approach? Why?
 
-Partial answers are perfectly fine — we just want to understand how you think.
+You may answer in a short section inside `SOLUTION.md` titled:
+
+`Bonus – AWS`
+
+Even a partial answer is perfectly fine — we are interested in how you reason about system design.
 
 ---
 
 ## Time
 
 Take the time you consider appropriate.  
-We may discuss and explore your ideas together in a follow-up conversation.
+We may discuss your ideas together in a follow-up conversation.
 
 ---
 
 ## Submission
 
 1. Click "Use this template"
-2. Create a private repository in your account
+2. Create a private repository
 3. Add the following GitHub users as collaborators:
    - `pietroparini2`
    - `CDNNDR`
